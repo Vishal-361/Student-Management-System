@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Students &middot; Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <h1>Students</h1>
+    <span class="count">{{ students|length }} record(s)</span>
+</div>
+
+{# Search + course filter (GET form, so filters show up in the URL) #}
+<form class="filters" method="get" action="{{ url_for('students.list_students') }}">
+    <input type="text" name="q" placeholder="Search by name or roll number..."
+           value="{{ search }}">
+    <select name="course">
+        <option value="">All courses</option>
+        {% for c in courses %}
+            <option value="{{ c }}" {% if c == course %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn" type="submit">Search</button>
+    <a class="btn btn-secondary" href="{{ url_for('students.list_students') }}">Clear</a>
+</form>
+
+{% if students %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Semester</th>
+            <th>Marks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in students %}
+        <tr>
+            <td>{{ s.roll_no }}</td>
+            <td><a href="{{ url_for('students.student_detail', student_id=s.id) }}">{{ s.name }}</a></td>
+            <td>{{ s.course }}</td>
+            <td>{{ s.semester }}</td>
+            <td>{{ s.marks }}</td>
+            <td class="actions">
+                <a href="{{ url_for('students.student_detail', student_id=s.id) }}">View</a>
+                <a href="{{ url_for('students.edit_student', student_id=s.id) }}">Edit</a>
+                <a class="danger" href="{{ url_for('students.delete_student', student_id=s.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty">No students found. <a href="{{ url_for('students.add_student') }}">Add a student</a> to get started.</p>
+{% endif %}
+{% endblock %}

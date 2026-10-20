@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.name }} &middot; Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <h1>{{ student.name }}</h1>
+    <div class="head-actions">
+        <a class="btn btn-secondary" href="{{ url_for('students.edit_student', student_id=student.id) }}">Edit</a>
+        <a class="btn btn-danger" href="{{ url_for('students.delete_student', student_id=student.id) }}">Delete</a>
+    </div>
+</div>
+
+<div class="card">
+    <dl class="details">
+        <dt>Roll Number</dt>
+        <dd>{{ student.roll_no }}</dd>
+
+        <dt>Full Name</dt>
+        <dd>{{ student.name }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ student.email }}</dd>
+
+        <dt>Phone</dt>
+        <dd>{{ student.phone }}</dd>
+
+        <dt>Course</dt>
+        <dd>{{ student.course }}</dd>
+
+        <dt>Semester</dt>
+        <dd>{{ student.semester }}</dd>
+
+        <dt>Marks</dt>
+        <dd>{{ student.marks }} / 100</dd>
+    </dl>
+</div>
+
+<p class="back-link"><a href="{{ url_for('students.list_students') }}">&larr; Back to all students</a></p>
+{% endblock %}

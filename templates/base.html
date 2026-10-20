@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{{ url_for('students.list_students') }}">Student Management System</a>
+            <nav class="main-nav">
+                <a href="{{ url_for('students.list_students') }}">All Students</a>
+                <a class="btn btn-light" href="{{ url_for('students.add_student') }}">+ Add Student</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {# Flash messages: success (green) and error (red) feedback #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">Student Management System &middot; Built with Flask &amp; SQLite</div>
+    </footer>
+</body>
+</html>

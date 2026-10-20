@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit Student' if mode == 'edit' else 'Add Student' }} &middot; Student Management System{% endblock %}
+
+{% block content %}
+<h1>{{ 'Edit Student' if mode == 'edit' else 'Add Student' }}</h1>
+
+{# One form template serves both add and edit; only the action URL differs.
+   Field values come from `student`, so after a validation error the form
+   re-renders with whatever the user already typed. #}
+<form class="card form" method="post"
+      action="{% if mode == 'edit' %}{{ url_for('students.edit_student', student_id=student.id) }}{% else %}{{ url_for('students.add_student') }}{% endif %}" novalidate>
+
+    <label>
+        Roll Number <span class="required">*</span>
+        <input type="text" name="roll_no" value="{{ student.roll_no or '' }}" placeholder="e.g. CSE-104">
+    </label>
+
+    <label>
+        Full Name <span class="required">*</span>
+        <input type="text" name="name" value="{{ student.name or '' }}" placeholder="e.g. Meera Joshi">
+    </label>
+
+    <label>
+        Email <span class="required">*</span>
+        <input type="email" name="email" value="{{ student.email or '' }}" placeholder="e.g. meera.joshi@example.com">
+    </label>
+
+    <label>
+        Phone <span class="required">*</span>
+        <input type="tel" name="phone" value="{{ student.phone or '' }}" placeholder="10-digit mobile number">
+    </label>
+
+    <label>
+        Course <span class="required">*</span>
+        <select name="course">
+            <option value="">-- Select course --</option>
+            {% for c in courses %}
+                <option value="{{ c }}" {% if student.course == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <div class="form-row">
+        <label>
+            Semester (1-8) <span class="required">*</span>
+            <input type="number" name="semester" min="1" max="8" value="{{ student.semester or '' }}">
+        </label>
+
+        <label>
+            Marks (0-100) <span class="required">*</span>
+            <input type="number" name="marks" min="0" max="100" step="0.1" value="{{ student.marks or '' }}">
+        </label>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" type="submit">{{ 'Save Changes' if mode == 'edit' else 'Add Student' }}</button>
+        <a class="btn btn-secondary" href="{{ url_for('students.list_students') }}">Cancel</a>
+    </div>
+</form>
+{% endblock %}
